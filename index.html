@@ -30,25 +30,31 @@ tailwind.config = {
 }
 </script>
 <style>
-  body { font-family: 'Pretendard', sans-serif; background-color: #F8FAFC; }
+  body { font-family: 'Pretendard', sans-serif; background-color: #FBF5EA; background-image: radial-gradient(circle at 95% 5%, rgba(214,119,54,.10), transparent 22rem), radial-gradient(circle at 4% 45%, rgba(191,126,61,.08), transparent 20rem); }
   .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
   .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
   .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
   .color-swatch { width: 44px; height: 44px; border-radius: 50%; border: 3px solid transparent; cursor: pointer; transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
   .color-swatch:hover { transform: scale(1.08); }
-  .color-swatch.selected { border-color: #002D56; box-shadow: 0 0 0 2px #fff, 0 0 0 4px #002D56; }
+  .color-swatch.selected { border-color: #8B4B2B; box-shadow: 0 0 0 2px #fff, 0 0 0 4px #8B4B2B; }
   .size-btn { min-width: 52px; }
-  .size-btn.selected { background: #002D56; color: white; border-color: #002D56; }
-  #admin-table-body tr.group-divider > td { border-top: 3px solid #002D56; }
+  .size-btn.selected { background: #754329; color: white; border-color: #754329; }
+  #admin-table-body tr.group-divider > td { border-top: 3px solid #8B4B2B; }
+  .autumn-banner { background: linear-gradient(120deg,#fff8eb 0%,#f7e6cc 58%,#f3d9b8 100%); border: 1px solid #ead2b4; color: #392719; }
+  .autumn-banner .intro-copy { color: #49392d; }
+  .autumn-banner .info-panel { background: rgba(255,255,255,.58); border: 1px solid #e7c9a6; }
+  .autumn-banner .info-label { color: #8b4527; }
+  .autumn-banner .info-icon { color: #b85d2d; }
+  .autumn-pill { background:#754329; color:#fff9ef; }
 </style>
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col justify-between">
 
-<header class="bg-hufs-navy text-white shadow-md sticky top-0 z-50">
+<header class="bg-[#553522] text-white shadow-md sticky top-0 z-50">
   <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
     <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('user')">
-      <div class="w-10 h-10 bg-hufs-gold text-hufs-navy font-bold rounded-lg flex items-center justify-center text-lg shadow-sm">
+      <div class="w-10 h-10 bg-[#e4b56d] text-[#553522] font-bold rounded-lg flex items-center justify-center text-lg shadow-sm">
         <i class="fa-solid fa-shirt"></i>
       </div>
       <div>
@@ -71,38 +77,32 @@ tailwind.config = {
 
   <!-- ========== 사용자 뷰 ========== -->
   <section id="view-user" class="space-y-6">
-    <!-- Banner -->
-    <div class="bg-gradient-to-r from-hufs-navy via-hufs-blue to-indigo-900 rounded-2xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden">
-      <div class="relative z-10 max-w-2xl">
-        <span class="inline-block px-3 py-1 bg-hufs-gold text-hufs-navy text-xs font-bold rounded-full mb-3 shadow">유니클로 후리스풀집재킷</span>
-        <h2 class="text-2xl md:text-3xl font-bold mb-2">조합원 여러분, 색상과 사이즈를 선택해 주세요</h2>
-        <p class="text-blue-100 text-sm md:text-base leading-relaxed mb-4">
-          아래에서 이름을 검색한 뒤 원하시는 <strong>색상</strong>과 <strong>사이즈</strong>를 선택해 주시기 바랍니다.<br class="hidden sm:inline">
-          제출 후에도 조사 기간 중에는 언제든지 변경할 수 있습니다.<br class="hidden sm:inline">
-          *신청 기간: 2026년 10월 19일(월) ~ 10월 30일(금)<br class="hidden sm:inline">
-          *신청 대상: (자격정지 제외) 노동조합 조합원<br class="hidden sm:inline">
-*신청 내용: 성함, 부서, 희망 사이즈 및 컬러 (남/여 구분)<span class="text-amber-200"></span>
-        </p>
-        <div class="flex flex-wrap gap-3 text-xs md:text-sm text-slate-200">
-          <span class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-md">9가지 색상</span>
-          <span class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-md"><i class="fa-solid fa-ruler text-hufs-gold"></i> XS ~ 4XL</span>
-          <a href="https://www.uniqlo.com/kr/ko/products/E450195-000/00" target="_blank" rel="noopener" class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-md transition">
-            <i class="fa-solid fa-external-link text-hufs-gold"></i> 상품 자세히 보기
-          </a>
+    <!-- Autumn announcement banner -->
+    <div class="autumn-banner rounded-3xl p-6 md:p-9 shadow-sm relative overflow-hidden">
+      <div class="absolute right-5 top-3 text-5xl md:text-7xl text-orange-700/15 pointer-events-none" aria-hidden="true"><i class="fa-solid fa-leaf"></i></div>
+      <div class="relative z-10 max-w-4xl">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#ead2b4] text-[#704127] text-xs font-bold rounded-full mb-4"><i class="fa-regular fa-heart"></i> 2026 노동조합 총회 기념</span>
+        <h2 class="text-3xl md:text-5xl font-bold mb-2 leading-tight tracking-tight text-[#4c2d1c]">계절의 결이<br class="sm:hidden"> 바뀌는 시기입니다.</h2>
+        <div class="w-24 h-1 rounded-full bg-[#c46a37] my-5"></div>
+        <div class="intro-copy text-sm md:text-base leading-8 space-y-3 max-w-3xl">
+          <p>각자의 자리에서 학교 발전을 위하여 애쓰시는 조합원 여러분께 따뜻한 안부를 전합니다.</p>
+          <p>다가오는 총회를 맞아 다사다난했던 올 한 해를 돌아보며, 늘 노동조합과 함께해 주신 조합원 여러분께 깊은 감사의 마음을 담아 <strong class="text-[#a94e27]">자그마한 선물(후리스)</strong>을 준비했습니다.</p>
+          <p>이 옷 한 벌이 2026년 이 계절, 우리가 같은 일터에서 함께 고생하고 웃었던 시간을 오래도록 간직할 다정한 증표가 되었으면 합니다.</p>
+          <p>어려운 환경에서도 조합원으로 남아주심에 감사드립니다.</p>
+          <p class="font-bold text-[#8b4527] pt-1">아래 설문조사에 참여해 주시기 바랍니다.</p>
         </div>
-        <!-- 인기 색상 실시간 배지 -->
-        <div id="popular-color-badge" class="hidden mt-4 inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2.5 text-sm">
-          <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-hufs-gold opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-hufs-gold"></span>
-          </span>
-          <span class="text-blue-100">지금 가장 많이 고른 색:</span>
-          <span id="popular-color-swatch" class="w-4 h-4 rounded-full border border-white/40 inline-block shrink-0"></span>
-          <strong id="popular-color-name" class="text-white">—</strong>
-          <span id="popular-color-count" class="text-blue-200 text-xs"></span>
+        <div class="info-panel mt-6 md:mt-7 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 rounded-2xl p-4 md:p-5 text-sm md:text-base">
+          <div class="flex items-start gap-3 md:pr-4 md:border-r md:border-[#d9b995]"><i class="fa-regular fa-calendar-check info-icon text-xl mt-1"></i><div><strong class="info-label">신청 기간</strong><p class="mt-1 leading-6 text-[#3f3026]">2026년 10월 19일(월)<br>~ 10월 30일(금)</p></div></div>
+          <div class="flex items-start gap-3 md:px-4 md:border-r md:border-[#d9b995]"><i class="fa-solid fa-users info-icon text-xl mt-1"></i><div><strong class="info-label">신청 대상</strong><p class="mt-1 leading-6 text-[#3f3026]">(자격정지 제외)<br>노동조합 조합원</p></div></div>
+          <div class="flex items-start gap-3 md:pl-4"><i class="fa-solid fa-clipboard-list info-icon text-xl mt-1"></i><div><strong class="info-label">신청 내용</strong><p class="mt-1 leading-6 text-[#3f3026]">성함, 부서,<br>희망 사이즈 및 컬러 (남/여 구분)</p></div></div>
+        </div>
+        <div class="flex flex-wrap gap-2.5 mt-4 text-xs md:text-sm">
+          <span class="autumn-pill inline-flex items-center gap-2 px-4 py-2 rounded-full"><i class="fa-solid fa-leaf"></i> 9가지 색상</span>
+          <span class="autumn-pill inline-flex items-center gap-2 px-4 py-2 rounded-full"><i class="fa-solid fa-ruler"></i> XS ~ 4XL</span>
+          <a href="https://www.uniqlo.com/kr/ko/products/E450195-000/00?colorDisplayCode=09&sizeDisplayCode=004" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-[#d9b995] text-[#704127] hover:bg-white transition"><i class="fa-solid fa-arrow-up-right-from-square"></i> 유니클로 상품 정보</a>
         </div>
       </div>
-      <i class="fa-solid fa-shirt absolute -right-6 -bottom-6 text-9xl text-white/5 pointer-events-none transform -rotate-12"></i>
+      <div class="absolute -right-5 -bottom-7 text-8xl md:text-9xl text-[#b65f35]/10 pointer-events-none" aria-hidden="true"><i class="fa-solid fa-leaf"></i></div>
     </div>
 
     <!-- Search Card -->
@@ -485,7 +485,8 @@ const GENDER_MAP = {
   '문태현':'M','정재원':'M','오윤희':'F','변민선':'F','유희라':'F','이지영':'F','박정선':'F','박은주':'F','박정혜':'F','진수희':'F',
   '김해옥':'F','이행도':'M','김미래':'F','임서현':'F','유광옥':'F','조수훈':'M','고희경':'F','송드보람':'F','조모란':'F','한희태':'M',
   '이희승':'M','박민지':'F','이지은':'F','박희성':'M','김보람':'F','정문규':'M','송재민':'M','임주리':'F','이혜승':'F','김혜원':'F',
-  '강용현':'M','김나래':'F'
+  '강용현':'M','김나래':'F',
+  '박선영':'M','남우영':'F','김선규':'M','임창석':'M'
 };
 
 let currentModelGender = 'M';
@@ -590,7 +591,10 @@ const rawSeoulData = [
 { name: '김연우', affiliation: '한국외대', dept: '진로취업지원센터(서울)', phone: '010-2601-2714', email: 'kyw@hufs.ac.kr' },
 { name: '한혜수', affiliation: '한국외대', dept: '대학원사무1팀(일반대학원)', phone: '010-3796-8535', email: 'yoohan@hufs.ac.kr' },
 { name: '장예나', affiliation: '한국외대', dept: '전략기획팀 겸 국책사업통합추진단', phone: '010-5340-6327', email: 'yena@hufs.ac.kr' },
-{ name: '성보민', affiliation: '한국외대', dept: '학사종합지원센터(서울)', phone: '010-3622-1689', email: 'bomin@hufs.ac.kr' }
+{ name: '성보민', affiliation: '한국외대', dept: '학사종합지원센터(서울)', phone: '010-3622-1689', email: 'bomin@hufs.ac.kr' },
+{ name: '남우영', affiliation: '한국외대', dept: '대학원사무1팀', phone: '010-4766-0124', email: 'wynam@hufs.ac.kr' },
+{ name: '김선규', affiliation: '한국외대', dept: '시설관리팀', phone: '010-9785-4010', email: 'sunkyu@hufs.ac.kr' },
+{ name: '임창석', affiliation: '한국외대', dept: '노동조합', phone: '010-9555-5469', email: 'limchangsuk@hufs.ac.kr' }
 ];
 
 const rawGlobalData = [
@@ -635,7 +639,8 @@ const rawGlobalData = [
 { name: '이혜승', affiliation: '산학협력단', dept: '연구지원2팀', phone: '010-6549-8101', email: 'seung417@hufs.ac.kr' },
 { name: '김혜원', affiliation: '산학협력단', dept: '연구지원2팀', phone: '010-4131-6808', email: 'sarvenaz12@hufs.ac.kr' },
 { name: '강용현', affiliation: '한국외대', dept: '시설관리팀', phone: '010-7303-5471', email: 'da512@hufs.ac.kr' },
-{ name: '김나래', affiliation: '산학협력단', dept: '연구지원1팀', phone: '010-9979-0528', email: 'narae528@hufs.ac.kr' }
+{ name: '김나래', affiliation: '산학협력단', dept: '연구지원1팀', phone: '010-9979-0528', email: 'narae528@hufs.ac.kr' },
+{ name: '박선영', affiliation: '한국외대', dept: '학사종합지원센터 겸 원스톱서비스센터', phone: '010-7301-0103', email: 'sy-park21@hufs.ac.kr' }
 ];
 
 let participants = [];
