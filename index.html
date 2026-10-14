@@ -102,32 +102,39 @@ tailwind.config = {
           <a href="https://www.uniqlo.com/kr/ko/products/E450195-000/00?colorDisplayCode=09&sizeDisplayCode=004" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-[#d9b995] text-[#704127] hover:bg-white transition"><i class="fa-solid fa-arrow-up-right-from-square"></i> 상품 정보</a>
         </div>
 <!-- 성별별 인기 색상 실시간 배지 -->
-<div id="popular-color-badge" class="hidden mt-4 flex-wrap items-center gap-3 bg-white/90 backdrop-blur-sm border border-white/40 rounded-xl px-4 py-2.5 text-sm shadow-md">
+<div id="popular-color-badge" class="hidden mt-4 flex-col items-start gap-2 bg-white/90 backdrop-blur-sm border border-white/40 rounded-xl p-4 text-sm shadow-md">
   
-  <!-- 전체/남성 배지 -->
-  <div class="inline-flex items-center gap-1.5 text-[#4A2E18]">
-    <span class="relative flex h-2.5 w-2.5">
+  <!-- 1행: 타이틀 -->
+  <div class="inline-flex items-center gap-2 text-[#4A2E18]">
+    <span class="relative flex h-2.5 w-2.5 shrink-0">
       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-hufs-gold opacity-75"></span>
       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-hufs-gold"></span>
     </span>
-    <span class="font-bold">지금 가장 많이 고른 색</span>
-    <!-- 줄바꿈을 위한 구분 요소 -->
-  <div class="w-full"></div>
-    <span class="font-bold">남성 1위:</span>
-    <span id="popular-color-swatch-male" class="w-3.5 h-3.5 rounded-full border border-black/20 inline-block shrink-0"></span>
-    <strong id="popular-color-name-male" class="text-[#4A2E18] font-semibold">—</strong>
-    <span id="popular-color-count-male" class="text-[#6B4423] text-xs"></span>
+    <span class="font-bold text-base leading-none">지금 가장 많이 고른 색</span>
   </div>
 
-  <span class="text-[#B39373]">|</span>
+  <!-- 2행: 남성 1위 | 여성 1위 -->
+  <div class="flex flex-wrap items-center gap-3 text-[#4A2E18] whitespace-nowrap">
+    <!-- 남성 1위 -->
+    <div class="inline-flex items-center gap-1.5">
+      <span class="font-bold">남성 1위:</span>
+      <span id="popular-color-swatch-male" class="w-3.5 h-3.5 rounded-full border border-black/20 inline-block shrink-0"></span>
+      <strong id="popular-color-name-male" class="text-[#4A2E18] font-semibold">—</strong>
+      <span id="popular-color-count-male" class="text-[#6B4423] text-xs"></span>
+    </div>
 
-  <!-- 여성 배지 -->
-  <div class="inline-flex items-center gap-1.5 text-[#4A2E18]">
-    <span class="font-bold">여성 1위:</span>
-    <span id="popular-color-swatch-female" class="w-3.5 h-3.5 rounded-full border border-black/20 inline-block shrink-0"></span>
-    <strong id="popular-color-name-female" class="text-[#4A2E18] font-semibold">—</strong>
-    <span id="popular-color-count-female" class="text-[#6B4423] text-xs"></span>
+    <span class="text-[#B39373]">|</span>
+
+    <!-- 여성 1위 -->
+    <div class="inline-flex items-center gap-1.5">
+      <span class="font-bold">여성 1위:</span>
+      <span id="popular-color-swatch-female" class="w-3.5 h-3.5 rounded-full border border-black/20 inline-block shrink-0"></span>
+      <strong id="popular-color-name-female" class="text-[#4A2E18] font-semibold">—</strong>
+      <span id="popular-color-count-female" class="text-[#6B4423] text-xs"></span>
+    </div>
   </div>
+
+</div>
 
 </div>
         
