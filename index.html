@@ -99,8 +99,20 @@ tailwind.config = {
         <div class="flex flex-wrap gap-2.5 mt-4 text-sm md:text-sm">
           <span class="autumn-pill inline-flex items-center gap-2 px-4 py-2 rounded-full"><i class="fa-solid fa-leaf"></i> 9가지 색상</span>
           <span class="autumn-pill inline-flex items-center gap-2 px-4 py-2 rounded-full"><i class="fa-solid fa-ruler"></i> sm ~ 4XL</span>
-          <a href="https://www.uniqlo.com/kr/ko/products/E450195-000/00?colorDisplayCode=09&sizeDisplayCode=004" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-[#d9b995] text-[#704127] hover:bg-white transition"><i class="fa-solid fa-arrow-up-right-from-square"></i> 유니클로 상품 정보</a>
+          <a href="https://www.uniqlo.com/kr/ko/products/E450195-000/00?colorDisplayCode=09&sizeDisplayCode=004" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-[#d9b995] text-[#704127] hover:bg-white transition"><i class="fa-solid fa-arrow-up-right-from-square"></i> 상품 정보</a>
         </div>
+<!-- 인기 색상 실시간 배지 -->
+<div id="popular-color-badge" class="hidden mt-4 inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-2.5 text-sm">
+  <span class="relative flex h-2.5 w-2.5">
+    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-hufs-gold opacity-75"></span>
+    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-hufs-gold"></span>
+  </span>
+  <span class="text-blue-100">지금 가장 많이 고른 색:</span>
+  <span id="popular-color-swatch" class="w-4 h-4 rounded-full border border-white/40 inline-block shrink-0"></span>
+  <strong id="popular-color-name" class="text-white">—</strong>
+  <span id="popular-color-count" class="text-blue-200 text-xs"></span>
+</div>
+        
       </div>
       <div class="absolute -right-5 -bottom-7 text-8xl md:text-9xl text-[#b65f35]/10 pointer-events-none" aria-hidden="true"><i class="fa-solid fa-leaf"></i></div>
     </div>
