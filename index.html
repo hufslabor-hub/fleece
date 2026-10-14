@@ -98,7 +98,7 @@ tailwind.config = {
         </div>
         <div class="flex flex-wrap gap-2.5 mt-4 text-sm md:text-sm">
           <span class="autumn-pill inline-flex items-center gap-2 px-4 py-2 rounded-full"><i class="fa-solid fa-leaf"></i> 9가지 색상</span>
-          <span class="autumn-pill inline-flex items-center gap-2 px-4 py-2 rounded-full"><i class="fa-solid fa-ruler"></i> sm ~ 4XL</span>
+          <span class="autumn-pill inline-flex items-center gap-2 px-4 py-2 rounded-full"><i class="fa-solid fa-ruler"></i> XS ~ 4XL</span>
           <a href="https://www.uniqlo.com/kr/ko/products/E450195-000/00?colorDisplayCode=09&sizeDisplayCode=004" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/70 border border-[#d9b995] text-[#704127] hover:bg-white transition"><i class="fa-solid fa-arrow-up-right-from-square"></i> 상품 정보</a>
         </div>
 <!-- 성별별 인기 색상 실시간 배지 -->
@@ -110,6 +110,7 @@ tailwind.config = {
       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-hufs-gold opacity-75"></span>
       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-hufs-gold"></span>
     </span>
+    <p></ㅔ><span class="font-bold">지금 가장 많이 고른 색</span></p>
     <span class="font-bold">남성 1위:</span>
     <span id="popular-color-swatch-male" class="w-3.5 h-3.5 rounded-full border border-black/20 inline-block shrink-0"></span>
     <strong id="popular-color-name-male" class="text-[#4A2E18] font-semibold">—</strong>
@@ -822,7 +823,7 @@ function updateSizeHint() {
     return;
   }
   let size;
-  if (h < 155) size = 'sm';
+  if (h < 155) size = 'XS';
   else if (h < 162) size = 'S';
   else if (h < 170) size = 'M';
   else if (h < 177) size = 'L';
