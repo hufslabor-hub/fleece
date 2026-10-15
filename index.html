@@ -175,14 +175,29 @@ tailwind.config = {
       <label for="name-search-input" class="block text-sm font-bold text-slate-700 mb-2">
         <i class="fa-solid fa-magnifying-glass text-hufs-blue mr-1"></i> 조합원 이름 검색
       </label>
-      <div class="relative">
-        <input type="text" id="name-search-input" placeholder="이름을 입력하세요 (예: 홍길동)"
-          class="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-hufs-blue focus:border-transparent text-slate-800 text-base shadow-sm">
-        <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <button id="clear-search-btn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1.5">
-          <i class="fa-solid fa-circle-xmark"></i>
-        </button>
-      </div>
+    <div class="relative w-full min-w-0">
+  <input
+    type="text"
+    id="name-search-input"
+    placeholder="이름을 입력하세요 (예: 홍길동)"
+    class="block w-full min-w-0 box-border px-3 py-3.5 pl-11 pr-10
+           rounded-xl border border-slate-300
+           focus:outline-none focus:ring-2 focus:ring-hufs-blue
+           focus:border-transparent text-slate-800 text-base shadow-sm"
+  >
+
+  <i class="fa-solid fa-user absolute left-4 top-1/2
+            -translate-y-1/2 text-slate-400"></i>
+
+  <button
+    id="clear-search-btn"
+    type="button"
+    class="hidden absolute right-3 top-1/2 -translate-y-1/2
+           text-slate-400 hover:text-slate-600 p-1.5"
+  >
+    <i class="fa-solid fa-circle-xmark"></i>
+  </button>
+</div>
       <div id="suggestions-container" class="hidden mt-2 bg-white rounded-xl border border-slate-200 shadow-xl overflow-hidden divide-y divide-slate-100 max-h-60 overflow-y-auto custom-scrollbar"></div>
       <p class="text-sm text-slate-700 mt-2.5 flex items-center gap-1">
         <i class="fa-solid fa-circle-info text-blue-700"></i> 동명이인이 있는 경우 소속(근무부서)을 함께 확인해 주세요. 본인 선택만 표시됩니다.
