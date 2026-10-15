@@ -64,14 +64,17 @@ tailwind.config = {
     </div>
     
     <!-- 오른쪽 네비게이션 버튼 영역 -->
-    <nav class="flex items-center space-x-1.5 flex-shrink-0">
-      <button id="nav-user-btn" onclick="switchView('user')" class="px-2.5 py-1.5 rounded-lg text-xs font-medium transition bg-white/10 hover:bg-white/20 text-white flex items-center gap-1">
-        <i class="fa-solid fa-user-check"></i> <span>내 신청</span>
-      </button>
-      <button id="nav-admin-btn" onclick="switchView('admin')" class="px-2.5 py-1.5 rounded-lg text-xs font-medium transition bg-transparent hover:bg-white/10 text-white/70 hover:text-white flex items-center gap-1">
-        <i class="fa-solid fa-chart-pie"></i> <span class="hidden md:inline">관리자</span>
-      </button>
-    </nav>
+<nav class="flex items-center space-x-1.5 flex-shrink-0">
+  <!-- 내 신청 버튼 (모바일/PC 모두 표시) -->
+  <button id="nav-user-btn" onclick="switchView('user')" class="px-2.5 py-1.5 rounded-lg text-xs font-medium transition bg-white/10 hover:bg-white/20 text-white flex items-center gap-1">
+    <i class="fa-solid fa-user-check"></i> <span>내 신청</span>
+  </button>
+  
+  <!-- 관리자 버튼 (hidden md:flex 추가로 모바일에서 완전히 숨김) -->
+  <button id="nav-admin-btn" onclick="switchView('admin')" class="hidden md:flex px-2.5 py-1.5 rounded-lg text-xs font-medium transition bg-transparent hover:bg-white/10 text-white/70 hover:text-white items-center gap-1">
+    <i class="fa-solid fa-chart-pie"></i> <span>관리자</span>
+  </button>
+</nav>
   </div>
 </header>
 
