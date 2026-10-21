@@ -120,7 +120,7 @@ tailwind.config = {
           <p class="font-bold text-[#8b4527] pt-1">아래 설문조사에 참여해 주시기 바랍니다.</p>
         </div>
         <div class="info-panel mt-6 md:mt-7 grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-0 rounded-2xl p-4 md:p-5 text-sm md:text-base">
-          <div class="flex items-start gap-3 md:pr-4 md:border-r md:border-[#d9b995]"><i class="fa-regular fa-calendar-check info-icon text-xl mt-1"></i><div><strong class="info-label">신청 기간</strong><p class="mt-1 leading-6 text-[#3f3026]">2026년 10월 21일(수)<br>~ 10월 30일(금)</p></div></div>
+          <div class="flex items-start gap-3 md:pr-4 md:border-r md:border-[#d9b995]"><i class="fa-regular fa-calendar-check info-icon text-xl mt-1"></i><div><strong class="info-label">신청 기간</strong><p class="mt-1 leading-6 text-[#3f3026]">2026년 10월 22일(목)<br>~ 10월 30일(금)</p></div></div>
           <div class="flex items-start gap-3 md:px-4 md:border-r md:border-[#d9b995]"><i class="fa-solid fa-users info-icon text-xl mt-1"></i><div><strong class="info-label">신청 대상</strong><p class="mt-1 leading-6 text-[#3f3026]">(자격정지 제외)<br>노동조합 조합원</p></div></div>
           <div class="flex items-start gap-3 md:px-4 md:border-r md:border-[#d9b995]"><i class="fa-solid fa-clipboard-list info-icon text-xl mt-1"></i><div><strong class="info-label">신청 내용</strong><p class="mt-1 leading-6 text-[#3f3026]">희망 사이즈 및 컬러</p></div></div>
           <div class="flex items-start gap-3 md:pl-4"><i class="fa-solid fa-boxes-stacked info-icon text-xl mt-1"></i><div><strong class="info-label">배부 방식</strong><p class="mt-1 leading-6 text-[#3f3026]">각 캠퍼스 노조 사무실에서 배부. 자세한 일정은 추후 통보 예정.</p></div></div>
@@ -388,6 +388,7 @@ tailwind.config = {
           <button id="tab-all" onclick="filterCampus('ALL')" class="px-4 py-2 rounded-xl text-sm font-bold transition bg-hufs-navy text-white">전체</button>
           <button id="tab-seoul" onclick="filterCampus('서울')" class="px-4 py-2 rounded-xl text-sm font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200">서울캠퍼스</button>
           <button id="tab-global" onclick="filterCampus('글로벌')" class="px-4 py-2 rounded-xl text-sm font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200">글로벌캠퍼스</button>
+          <button id="tab-songdo" onclick="filterCampus('송도')" class="px-4 py-2 rounded-xl text-sm font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200">송도캠퍼스</button>
         </div>
         <div class="flex flex-wrap items-center gap-2">
           <select id="admin-status-filter" onchange="applyAdminFilters()" class="px-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-hufs-blue">
@@ -565,6 +566,15 @@ const GENDER_MAP = {
 
 let currentModelGender = 'M';
 
+/* 송도캠퍼스 소속 (원본 명단에서는 글로벌 목록에 있으나 별도 캠퍼스로 구분) */
+const SONGDO_NAMES = new Set(['조병덕', '박정수']);
+
+const CAMPUS_BADGE_CLASS = {
+  '서울': 'bg-blue-100 text-blue-800',
+  '글로벌': 'bg-emerald-100 text-emerald-800',
+  '송도': 'bg-violet-100 text-violet-800'
+};
+
 const FUN_TOASTS = [
   '선택되었습니다. 기간 내에는 수정 가능합니다.'
 ];
@@ -722,9 +732,9 @@ const rawGlobalData = [
 { name: '강용현', affiliation: '한국외대', dept: '시설관리팀', phone: '010-7303-5471', email: 'da512@hufs.ac.kr' },
 { name: '김나래', affiliation: '산학협력단', dept: '연구지원1팀', phone: '010-9979-0528', email: 'narae528@hufs.ac.kr' },
 { name: '박선영', affiliation: '한국외대', dept: '학사종합지원센터 겸 원스톱서비스센터', phone: '010-7301-0103', email: 'sy-park21@hufs.ac.kr' },
-{ name: '김기일', affiliation: '한국외대', dept: 'AI교육원운영팀', phone: '010-9996-9044', email: 'kimkiil@hufs.ac.kr' },
-{ name: '박정수', affiliation: '한국외대', dept: '송도캠퍼스운영팀', phone: '010-2896-9554', email: 'tn7797@hufs.ac.kr' },
-{ name: '조병덕', affiliation: '한국외대', dept: '송도캠퍼스운영팀', phone: '010-4512-4619', email: 'jbd@hufs.ac.kr' }
+{ name: '김기일', affiliation: '한국외대', dept: '-', phone: '010-9996-9044', email: 'kimkiil@hufs.ac.kr' },
+{ name: '박정수', affiliation: '한국외대', dept: '-', phone: '010-2896-9554', email: 'tn7797@hufs.ac.kr' },
+{ name: '조병덕', affiliation: '한국외대', dept: '-', phone: '010-4512-4619', email: 'jbd@hufs.ac.kr' }
 ];
 
 let participants = [];
@@ -742,7 +752,7 @@ function initData() {
   }));
   const global = rawGlobalData.map((item, idx) => ({
     id: `GLOBAL_${idx}_${item.name}`,
-    campus: '글로벌',
+    campus: SONGDO_NAMES.has(item.name) ? '송도' : '글로벌',
     gender: GENDER_MAP[item.name] || 'M',
     ...item
   }));
@@ -1043,7 +1053,7 @@ function selectParticipant(id) {
 
   document.getElementById('participant-name-title').innerText = `${selectedParticipant.name} 님`;
   document.getElementById('campus-badge').innerText = `${selectedParticipant.campus}캠퍼스`;
-  document.getElementById('campus-badge').className = `px-2.5 py-1 text-sm font-bold rounded-full ${selectedParticipant.campus === '서울' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'}`;
+  document.getElementById('campus-badge').className = `px-2.5 py-1 text-sm font-bold rounded-full ${CAMPUS_BADGE_CLASS[selectedParticipant.campus] || CAMPUS_BADGE_CLASS['서울']}`;
   document.getElementById('info-dept').innerText = `${selectedParticipant.affiliation} / ${selectedParticipant.dept}`;
 
   // 본인 확인 초기화
@@ -1258,11 +1268,13 @@ function filterCampus(campus) {
   const btnAll = document.getElementById('tab-all');
   const btnSeoul = document.getElementById('tab-seoul');
   const btnGlobal = document.getElementById('tab-global');
+  const btnSongdo = document.getElementById('tab-songdo');
   const activeClass = "px-4 py-2 rounded-xl text-sm font-bold transition bg-hufs-navy text-white";
   const inactiveClass = "px-4 py-2 rounded-xl text-sm font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200";
   btnAll.className = campus === 'ALL' ? activeClass : inactiveClass;
   btnSeoul.className = campus === '서울' ? activeClass : inactiveClass;
   btnGlobal.className = campus === '글로벌' ? activeClass : inactiveClass;
+  btnSongdo.className = campus === '송도' ? activeClass : inactiveClass;
   updateAdminDashboard();
 }
 
@@ -1281,9 +1293,10 @@ function updateAdminDashboard() {
   const pending = total - done;
   const seoulCnt = filtered.filter(p => p.campus === '서울').length;
   const globalCnt = filtered.filter(p => p.campus === '글로벌').length;
+  const songdoCnt = filtered.filter(p => p.campus === '송도').length;
 
   document.getElementById('stat-total').innerText = `${total}명`;
-  document.getElementById('stat-total-sub').innerText = `서울 ${seoulCnt} / 글로벌 ${globalCnt}`;
+  document.getElementById('stat-total-sub').innerText = `서울 ${seoulCnt} / 글로벌 ${globalCnt} / 송도 ${songdoCnt}`;
   document.getElementById('stat-done').innerText = `${done}명`;
   document.getElementById('stat-done-pct').innerText = total ? `${Math.round((done / total) * 100)}%` : '0%';
   document.getElementById('stat-pending').innerText = `${pending}명`;
@@ -1375,7 +1388,7 @@ function renderAdminTable(list) {
 
     return `
 <tr class="hover:bg-slate-50 transition text-sm md:text-sm">
-  <td class="p-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded ${item.campus==='서울'?'bg-blue-100 text-blue-800':'bg-emerald-100 text-emerald-800'} font-bold">${item.campus}</span></td>
+  <td class="p-3 whitespace-nowrap"><span class="px-2 py-0.5 rounded ${CAMPUS_BADGE_CLASS[item.campus] || ''} font-bold">${item.campus}</span></td>
   <td class="p-3 font-bold text-slate-800 whitespace-nowrap">${item.name}</td>
   <td class="p-3 text-slate-600">${item.affiliation} / ${item.dept}</td>
   <td class="p-3 text-slate-600 whitespace-nowrap">${item.phone}</td>
