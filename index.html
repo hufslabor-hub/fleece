@@ -159,7 +159,7 @@ tailwind.config = {
       <div class="absolute -right-5 -bottom-7 text-8xl md:text-9xl text-[#b65f35]/10 pointer-events-none" aria-hidden="true"><i class="fa-solid fa-leaf"></i></div>
     </div>
 
-    <!-- 선택 기간 안내 배너 -->
+    <!-- 신청 기간 안내 배너 -->
     <div id="period-banner" class="max-w-2xl mx-auto rounded-2xl border p-4 flex items-start gap-3 text-sm bg-emerald-50 border-emerald-200 text-emerald-900">
       <i id="period-icon" class="fa-solid fa-hourglass-half text-lg mt-0.5"></i>
       <div class="min-w-0">
@@ -269,16 +269,16 @@ tailwind.config = {
         <!-- 인증 후 보이는 영역 -->
         <div id="selection-unlocked" class="hidden space-y-6">
 
-        <!-- 선택 기간 종료 안내 -->
+        <!-- 신청 기간 종료 안내 -->
         <div id="closed-notice" class="hidden rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800 flex items-start gap-3">
           <i class="fa-solid fa-lock mt-0.5"></i>
           <div>
-            <strong>선택 기간이 종료되었습니다.</strong>
+            <strong>신청 기간이 종료되었습니다.</strong>
             <p class="mt-1 leading-relaxed">더 이상 색상·사이즈를 선택하거나 변경할 수 없습니다. 변경이 필요하시면 노동조합 사무실(02-2173-2611)로 문의해 주세요.</p>
           </div>
         </div>
 
-        <!-- 수령 확인 (선택 기간 종료 후 표시) -->
+        <!-- 수령 확인 (신청 기간 종료 후 표시) -->
         <div id="receipt-section" class="hidden space-y-3">
           <div id="receipt-pending" class="hidden rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-3">
             <div class="flex items-center gap-2 text-amber-900 font-bold text-sm">
@@ -386,11 +386,11 @@ tailwind.config = {
       </div>
     </div>
 
-    <!-- 선택 기간 설정 -->
+    <!-- 신청 기간 설정 -->
     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-2">
         <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-          <i class="fa-regular fa-clock text-hufs-blue"></i> 선택 기간 설정
+          <i class="fa-regular fa-clock text-hufs-blue"></i> 신청 기간 설정
         </h3>
         <span id="admin-period-status" class="px-3 py-1 rounded-full text-sm font-bold bg-emerald-100 text-emerald-800">선택 진행 중</span>
       </div>
@@ -828,9 +828,9 @@ let currentAdminCampus = 'ALL';
 let adminUnlocked = false;
 const ADMIN_PASSWORD = '2611';
 
-/* ========== 선택 기간 / 수령 ========== */
+/* ========== 신청 기간 / 수령 ========== */
 const DEFAULT_DEADLINE_ISO = '2026-10-30T23:59:59+09:00'; // 기본 마감: 2026-10-30 23:59:59 (KST)
-const CONFIG_DOC_ID = '_config';                          // 선택 기간 설정을 저장하는 문서 ID
+const CONFIG_DOC_ID = '_config';                          // 신청 기간 설정을 저장하는 문서 ID
 let selectionDeadline = new Date(DEFAULT_DEADLINE_ISO);
 let lastSelectionOpen = null;
 
@@ -898,12 +898,12 @@ function renderPeriodBanner() {
   if (open) {
     banner.className = 'max-w-2xl mx-auto rounded-2xl border p-4 flex items-start gap-3 text-sm bg-emerald-50 border-emerald-200 text-emerald-900';
     icon.className = 'fa-solid fa-hourglass-half text-lg mt-0.5';
-    title.innerText = '선택 기간 진행 중';
+    title.innerText = '신청 기간 진행 중';
     desc.innerText = `마감: ${formatKST(selectionDeadline)} · 남은 시간 ${formatRemaining(selectionDeadline.getTime() + 1000 - Date.now())}`;
   } else {
     banner.className = 'max-w-2xl mx-auto rounded-2xl border p-4 flex items-start gap-3 text-sm bg-rose-50 border-rose-200 text-rose-900';
     icon.className = 'fa-solid fa-circle-exclamation text-lg mt-0.5';
-    title.innerText = '선택 기간이 종료되었습니다';
+    title.innerText = '신청 기간이 종료되었습니다';
     desc.innerText = `${formatKST(selectionDeadline)}에 마감되어 색상·사이즈를 더 이상 선택하거나 변경할 수 없습니다. 후리스를 수령하실 때는 이름 검색 후 본인 확인을 거쳐 '수령함' 버튼을 눌러 주세요.`;
   }
 }
@@ -930,7 +930,7 @@ function applyPhaseToSelectCard(p) {
   form.classList.toggle('opacity-50', !open);
   form.classList.toggle('pointer-events-none', !open);
   form.querySelectorAll('.color-swatch, .size-btn, #select-memo, button[type="submit"]').forEach(el => { el.disabled = !open; });
-  if (!open) document.getElementById('submit-btn-text').innerText = '선택 기간이 종료되었습니다';
+  if (!open) document.getElementById('submit-btn-text').innerText = '신청 기간이 종료되었습니다';
 
   document.getElementById('closed-notice').classList.toggle('hidden', open);
 
@@ -989,7 +989,7 @@ function removeLocalBackup(key) {
 async function handleReceive() {
   const p = selectedParticipant;
   if (!p) return;
-  if (isSelectionOpen()) { showToast('선택 기간이 끝난 후에 수령 처리할 수 있습니다.'); return; }
+  if (isSelectionOpen()) { showToast('신청 기간이 끝난 후에 수령 처리할 수 있습니다.'); return; }
   if (!(p.color && p.size)) { showToast('선택 내역이 없어 수령 처리할 수 없습니다.'); return; }
   if (p.received) return;
   if (!confirm(`${p.name} 님, 후리스를 실제로 수령하셨나요?\n\n수령 처리 후에는 본인이 취소할 수 없습니다.`)) return;
@@ -1040,7 +1040,7 @@ async function toggleReceivedAdmin(id) {
   showToast(next ? `${p.name} 님 수령 처리 완료` : `${p.name} 님 수령 처리 취소`);
 }
 
-/* ----- 선택 기간 설정 (관리자) ----- */
+/* ----- 신청 기간 설정 (관리자) ----- */
 async function persistDeadline(date, okMsg) {
   const iso = date.toISOString();
   let cloudOk = false;
@@ -1051,7 +1051,7 @@ async function persistDeadline(date, okMsg) {
       cloudOk = true;
     }
   } catch (err) {
-    console.error('선택 기간 저장 실패:', err);
+    console.error('신청 기간 저장 실패:', err);
   }
   mergeLocalBackup(CONFIG_DOC_ID, { selectionDeadline: iso });
   selectionDeadline = date;
@@ -1262,7 +1262,7 @@ function updateSizeHint() {
 
 
 window.applyRemoteSelection = function(savedMap) {
-  // 선택 기간 설정(_config 문서) 반영 — 없으면 기본값
+  // 신청 기간 설정(_config 문서) 반영 — 없으면 기본값
   const prevDeadline = selectionDeadline.getTime();
   const cfg = savedMap[CONFIG_DOC_ID];
   const cfgDate = cfg && cfg.selectionDeadline ? new Date(cfg.selectionDeadline) : null;
@@ -1336,7 +1336,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateAdminDashboard();
   updatePopularColorBadge();
 
-  // 선택 기간 표시 + 1초 타이머
+  // 신청 기간 표시 + 1초 타이머
   lastSelectionOpen = isSelectionOpen();
   renderPeriodBanner();
   updateAdminPeriodUI(true);
@@ -1551,7 +1551,7 @@ async function handleSelectSubmit(e) {
 
   // 마감 시각이 지났으면 제출 차단 (화면을 열어 둔 채 마감된 경우 대비)
   if (!isSelectionOpen()) {
-    showToast('선택 기간이 종료되어 제출할 수 없습니다.');
+    showToast('신청 기간이 종료되어 제출할 수 없습니다.');
     refreshSelectCardForPhase();
     return;
   }
@@ -1892,7 +1892,7 @@ async function resetIndividual(id) {
 }
 
 async function resetDataPrompt() {
-  if (!confirm('전체 조합원의 색상·사이즈 선택 및 수령 기록을 모두 초기화하시겠습니까?\n(공유 저장소에서 삭제되며 모든 사용자에게 반영됩니다. 선택 기간 설정은 유지됩니다)')) return;
+  if (!confirm('전체 조합원의 색상·사이즈 선택 및 수령 기록을 모두 초기화하시겠습니까?\n(공유 저장소에서 삭제되며 모든 사용자에게 반영됩니다. 신청 기간 설정은 유지됩니다)')) return;
 
   try {
     if (window.__fb) {
