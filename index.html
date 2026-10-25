@@ -120,7 +120,7 @@ tailwind.config = {
           <p class="font-bold text-[#8b4527] pt-1">아래 설문조사에 참여해 주시기 바랍니다.</p>
         </div>
         <div class="info-panel mt-6 md:mt-7 grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-0 rounded-2xl p-4 md:p-5 text-sm md:text-base">
-          <div class="flex items-start gap-3 md:pr-4 md:border-r md:border-[#d9b995]"><i class="fa-regular fa-calendar-check info-icon text-xl mt-1"></i><div><strong class="info-label">신청 기간</strong><p class="mt-1 leading-6 text-[#3f3026]">2026년 10월 21일(수)<br>~ 10월 30일(금)</p></div></div>
+          <div class="flex items-start gap-3 md:pr-4 md:border-r md:border-[#d9b995]"><i class="fa-regular fa-calendar-check info-icon text-xl mt-1"></i><div><strong class="info-label">신청 기간</strong><p class="mt-1 leading-6 text-[#3f3026]">2026년 10월 21일(수)<br>~ <span id="info-deadline-text">10월 30일(금)</span></p></div></div>
           <div class="flex items-start gap-3 md:px-4 md:border-r md:border-[#d9b995]"><i class="fa-solid fa-users info-icon text-xl mt-1"></i><div><strong class="info-label">신청 대상</strong><p class="mt-1 leading-6 text-[#3f3026]">(자격정지 제외)<br>노동조합 조합원</p></div></div>
           <div class="flex items-start gap-3 md:px-4 md:border-r md:border-[#d9b995]"><i class="fa-solid fa-clipboard-list info-icon text-xl mt-1"></i><div><strong class="info-label">신청 내용</strong><p class="mt-1 leading-6 text-[#3f3026]">희망 사이즈 및 컬러</p></div></div>
           <div class="flex items-start gap-3 md:pl-4"><i class="fa-solid fa-boxes-stacked info-icon text-xl mt-1"></i><div><strong class="info-label">배부 방식</strong><p class="mt-1 leading-6 text-[#3f3026]">각 캠퍼스 노조 사무실에서 배부. 자세한 일정은 추후 통보 예정.</p></div></div>
@@ -157,6 +157,15 @@ tailwind.config = {
         
       </div>
       <div class="absolute -right-5 -bottom-7 text-8xl md:text-9xl text-[#b65f35]/10 pointer-events-none" aria-hidden="true"><i class="fa-solid fa-leaf"></i></div>
+    </div>
+
+    <!-- 선택 기간 안내 배너 -->
+    <div id="period-banner" class="max-w-2xl mx-auto rounded-2xl border p-4 flex items-start gap-3 text-sm bg-emerald-50 border-emerald-200 text-emerald-900">
+      <i id="period-icon" class="fa-solid fa-hourglass-half text-lg mt-0.5"></i>
+      <div class="min-w-0">
+        <div id="period-title" class="font-bold text-base"></div>
+        <div id="period-desc" class="mt-1 leading-relaxed"></div>
+      </div>
     </div>
 
     <!-- Search Card -->
@@ -259,6 +268,41 @@ tailwind.config = {
 
         <!-- 인증 후 보이는 영역 -->
         <div id="selection-unlocked" class="hidden space-y-6">
+
+        <!-- 선택 기간 종료 안내 -->
+        <div id="closed-notice" class="hidden rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800 flex items-start gap-3">
+          <i class="fa-solid fa-lock mt-0.5"></i>
+          <div>
+            <strong>선택 기간이 종료되었습니다.</strong>
+            <p class="mt-1 leading-relaxed">더 이상 색상·사이즈를 선택하거나 변경할 수 없습니다. 변경이 필요하시면 노동조합 사무실(02-2173-2611)로 문의해 주세요.</p>
+          </div>
+        </div>
+
+        <!-- 수령 확인 (선택 기간 종료 후 표시) -->
+        <div id="receipt-section" class="hidden space-y-3">
+          <div id="receipt-pending" class="hidden rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-3">
+            <div class="flex items-center gap-2 text-amber-900 font-bold text-sm">
+              <i class="fa-solid fa-box-open"></i> 후리스 수령
+            </div>
+            <p class="text-sm text-amber-800 leading-relaxed">후리스를 <strong>직접 받으신 뒤</strong> 아래 버튼을 눌러 주세요. 수령 처리 후에는 본인이 취소할 수 없습니다.</p>
+            <button type="button" id="receipt-btn" onclick="handleReceive()"
+              class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-circle-check"></i>
+              <span>수령함</span>
+            </button>
+          </div>
+          <div id="receipt-done" class="hidden rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800 flex items-start gap-3">
+            <i class="fa-solid fa-circle-check text-lg mt-0.5"></i>
+            <div>
+              <strong>수령 완료</strong>
+              <p id="receipt-done-time" class="mt-1"></p>
+            </div>
+          </div>
+          <div id="receipt-none" class="hidden rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700 leading-relaxed">
+            선택 내역이 없어 수령 처리를 할 수 없습니다. 노동조합 사무실(02-2173-2611)로 문의해 주세요.
+          </div>
+        </div>
+
         <!-- Product Photos (gender-matched models) -->
         <div>
           <div class="mb-2">
@@ -342,8 +386,44 @@ tailwind.config = {
       </div>
     </div>
 
+    <!-- 선택 기간 설정 -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-regular fa-clock text-hufs-blue"></i> 선택 기간 설정
+        </h3>
+        <span id="admin-period-status" class="px-3 py-1 rounded-full text-sm font-bold bg-emerald-100 text-emerald-800">선택 진행 중</span>
+      </div>
+      <p class="text-sm text-slate-600">
+        현재 마감 시각: <strong id="admin-deadline-current" class="text-slate-800"></strong>
+        <span id="admin-deadline-remain" class="text-slate-500 ml-1"></span>
+      </p>
+      <div class="flex flex-wrap items-end gap-2">
+        <div>
+          <label for="admin-deadline-input" class="block text-sm font-semibold text-slate-600 mb-1">새 마감 일시 (한국 시간)</label>
+          <input type="datetime-local" step="1" id="admin-deadline-input"
+            class="px-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-hufs-blue">
+        </div>
+        <button onclick="saveDeadlineFromInput()" class="px-4 py-2 bg-hufs-navy hover:bg-hufs-blue text-white rounded-xl text-sm font-bold transition">
+          <i class="fa-solid fa-floppy-disk mr-1"></i>마감 일시 저장
+        </button>
+        <button onclick="extendDeadline(1)" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-semibold transition">
+          <i class="fa-solid fa-calendar-plus mr-1"></i>하루 연장
+        </button>
+        <button onclick="closeSelectionNow()" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-xl text-sm font-semibold transition">
+          <i class="fa-solid fa-lock mr-1"></i>지금 마감
+        </button>
+        <button onclick="resetDeadline()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-semibold transition">
+          <i class="fa-solid fa-rotate-left mr-1"></i>기본값(10/30 23:59:59)
+        </button>
+      </div>
+      <p class="text-sm text-slate-500 leading-relaxed">
+        마감 후에는 이용자 화면에서 선택이 비활성화되고 '수령함' 버튼이 나타납니다. 마감 일시를 미래로 바꾸면 다시 선택할 수 있습니다. 설정은 모든 이용자에게 실시간 반영됩니다.
+      </p>
+    </div>
+
     <!-- Key Metrics -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
         <div class="text-sm font-bold text-slate-400 uppercase">전체 대상자</div>
         <div class="text-3xl font-extrabold text-slate-800 mt-1" id="stat-total">0명</div>
@@ -358,6 +438,11 @@ tailwind.config = {
         <div class="text-sm font-bold text-amber-600 uppercase">미선택</div>
         <div class="text-3xl font-extrabold text-amber-600 mt-1" id="stat-pending">0명</div>
         <div class="text-sm text-amber-700 mt-1" id="stat-pending-pct">0%</div>
+      </div>
+      <div class="bg-white p-5 rounded-2xl border border-indigo-200 bg-indigo-50/20 shadow-sm">
+        <div class="text-sm font-bold text-indigo-600 uppercase">수령 완료</div>
+        <div class="text-3xl font-extrabold text-indigo-600 mt-1" id="stat-received">0명</div>
+        <div class="text-sm text-indigo-700 mt-1" id="stat-received-pct">선택 완료자 기준 0%</div>
       </div>
       <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
         <div class="text-sm font-bold text-slate-400 uppercase">상품</div>
@@ -395,6 +480,8 @@ tailwind.config = {
             <option value="ALL">전체 상태</option>
             <option value="선택완료">선택완료만</option>
             <option value="미선택">미선택만</option>
+            <option value="수령완료">수령완료만</option>
+            <option value="미수령">미수령(선택완료자)</option>
           </select>
           <select id="admin-color-filter" onchange="applyAdminFilters()" class="px-3 py-2 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-hufs-blue">
             <option value="ALL">전체 색상</option>
@@ -422,6 +509,7 @@ tailwind.config = {
                 <th class="p-3">색상</th>
                 <th class="p-3">사이즈</th>
                 <th class="p-3">메모</th>
+                <th class="p-3">수령</th>
                 <th class="p-3 text-center">관리</th>
               </tr>
             </thead>
@@ -740,6 +828,280 @@ let currentAdminCampus = 'ALL';
 let adminUnlocked = false;
 const ADMIN_PASSWORD = '2611';
 
+/* ========== 선택 기간 / 수령 ========== */
+const DEFAULT_DEADLINE_ISO = '2026-10-30T23:59:59+09:00'; // 기본 마감: 2026-10-30 23:59:59 (KST)
+const CONFIG_DOC_ID = '_config';                          // 선택 기간 설정을 저장하는 문서 ID
+let selectionDeadline = new Date(DEFAULT_DEADLINE_ISO);
+let lastSelectionOpen = null;
+
+// 마감 시각의 '초'까지 포함해서 선택 가능 (23:59:59 가 끝나는 순간까지)
+function isSelectionOpen() {
+  return Date.now() < selectionDeadline.getTime() + 1000;
+}
+
+function kstFormatParts(date, locale, opts) {
+  const p = {};
+  new Intl.DateTimeFormat(locale, { timeZone: 'Asia/Seoul', hourCycle: 'h23', ...opts })
+    .formatToParts(date).forEach(x => { p[x.type] = x.value; });
+  return p;
+}
+
+// 예: 2026년 10월 30일 (금) 23:59:59
+function formatKST(date) {
+  return new Intl.DateTimeFormat('ko-KR', {
+    timeZone: 'Asia/Seoul', hourCycle: 'h23',
+    year: 'numeric', month: 'long', day: 'numeric', weekday: 'short',
+    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  }).format(date);
+}
+
+// 예: 10월 30일(금)  (23:59 가 아니면 시각도 표시)
+function formatKSTShort(date) {
+  const p = kstFormatParts(date, 'ko-KR', { month: 'numeric', day: 'numeric', weekday: 'short', hour: '2-digit', minute: '2-digit' });
+  let t = `${p.month}월 ${p.day}일(${p.weekday})`;
+  if (!(p.hour === '23' && p.minute === '59')) t += ` ${p.hour}:${p.minute}`;
+  return t;
+}
+
+// 예: 11/02 14:30
+function formatKSTCompact(iso) {
+  if (!iso) return '';
+  const p = kstFormatParts(new Date(iso), 'en-CA', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+  return `${p.month}/${p.day} ${p.hour}:${p.minute}`;
+}
+
+// datetime-local 입력값(YYYY-MM-DDTHH:mm:ss, 한국 시간)
+function kstInputValue(date) {
+  const p = kstFormatParts(date, 'en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}:${p.second}`;
+}
+
+function formatRemaining(ms) {
+  const total = Math.max(0, Math.floor(ms / 1000));
+  const d = Math.floor(total / 86400);
+  const h = Math.floor((total % 86400) / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const sec = total % 60;
+  return `${d > 0 ? d + '일 ' : ''}${h}시간 ${m}분 ${sec}초`;
+}
+
+function renderPeriodBanner() {
+  const banner = document.getElementById('period-banner');
+  if (!banner) return;
+  const open = isSelectionOpen();
+  const infoText = document.getElementById('info-deadline-text');
+  if (infoText) infoText.innerText = formatKSTShort(selectionDeadline);
+
+  const icon = document.getElementById('period-icon');
+  const title = document.getElementById('period-title');
+  const desc = document.getElementById('period-desc');
+  if (open) {
+    banner.className = 'max-w-2xl mx-auto rounded-2xl border p-4 flex items-start gap-3 text-sm bg-emerald-50 border-emerald-200 text-emerald-900';
+    icon.className = 'fa-solid fa-hourglass-half text-lg mt-0.5';
+    title.innerText = '선택 기간 진행 중';
+    desc.innerText = `마감: ${formatKST(selectionDeadline)} · 남은 시간 ${formatRemaining(selectionDeadline.getTime() + 1000 - Date.now())}`;
+  } else {
+    banner.className = 'max-w-2xl mx-auto rounded-2xl border p-4 flex items-start gap-3 text-sm bg-rose-50 border-rose-200 text-rose-900';
+    icon.className = 'fa-solid fa-circle-exclamation text-lg mt-0.5';
+    title.innerText = '선택 기간이 종료되었습니다';
+    desc.innerText = `${formatKST(selectionDeadline)}에 마감되어 색상·사이즈를 더 이상 선택하거나 변경할 수 없습니다. 후리스를 수령하실 때는 이름 검색 후 본인 확인을 거쳐 '수령함' 버튼을 눌러 주세요.`;
+  }
+}
+
+function updateAdminPeriodUI(fillInput) {
+  const cur = document.getElementById('admin-deadline-current');
+  if (!cur) return;
+  const open = isSelectionOpen();
+  cur.innerText = formatKST(selectionDeadline);
+  const st = document.getElementById('admin-period-status');
+  st.innerText = open ? '선택 진행 중' : '선택 마감됨 (수령 단계)';
+  st.className = `px-3 py-1 rounded-full text-sm font-bold ${open ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`;
+  document.getElementById('admin-deadline-remain').innerText =
+    open ? `(남은 시간 ${formatRemaining(selectionDeadline.getTime() + 1000 - Date.now())})` : '';
+  if (fillInput) document.getElementById('admin-deadline-input').value = kstInputValue(selectionDeadline);
+}
+
+// 선택 카드 안의 마감/수령 UI 반영
+function applyPhaseToSelectCard(p) {
+  const open = isSelectionOpen();
+  const hasSelection = !!(p.color && p.size);
+
+  const form = document.getElementById('select-form');
+  form.classList.toggle('opacity-50', !open);
+  form.classList.toggle('pointer-events-none', !open);
+  form.querySelectorAll('.color-swatch, .size-btn, #select-memo, button[type="submit"]').forEach(el => { el.disabled = !open; });
+  if (!open) document.getElementById('submit-btn-text').innerText = '선택 기간이 종료되었습니다';
+
+  document.getElementById('closed-notice').classList.toggle('hidden', open);
+
+  const section = document.getElementById('receipt-section');
+  section.classList.toggle('hidden', open);
+  const pending = document.getElementById('receipt-pending');
+  const done = document.getElementById('receipt-done');
+  const none = document.getElementById('receipt-none');
+  pending.classList.add('hidden'); done.classList.add('hidden'); none.classList.add('hidden');
+  if (open) return;
+
+  if (p.received) {
+    document.getElementById('receipt-done-time').innerText =
+      p.receivedAt ? `${formatKST(new Date(p.receivedAt))} 에 수령 처리되었습니다.` : '수령 처리되었습니다.';
+    done.classList.remove('hidden');
+  } else if (hasSelection) {
+    pending.classList.remove('hidden');
+  } else {
+    none.classList.remove('hidden');
+  }
+}
+
+function refreshSelectCardForPhase() {
+  if (!selectedParticipant) return;
+  const unlocked = document.getElementById('selection-unlocked');
+  if (unlocked && !unlocked.classList.contains('hidden')) updateSelectCardUI(selectedParticipant);
+}
+
+// 1초마다: 남은 시간 갱신 + 마감 시각이 지나는 순간 화면 전환
+function tickSelectionPeriod() {
+  const open = isSelectionOpen();
+  const changed = lastSelectionOpen !== null && open !== lastSelectionOpen;
+  lastSelectionOpen = open;
+  renderPeriodBanner();
+  updateAdminPeriodUI(false);
+  if (changed) refreshSelectCardForPhase();
+}
+
+function mergeLocalBackup(key, patch) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('hufs_union_fleece') || '{}');
+    saved[key] = { ...(saved[key] || {}), ...patch };
+    localStorage.setItem('hufs_union_fleece', JSON.stringify(saved));
+  } catch (e) { console.warn('localStorage 저장 실패:', e); }
+}
+
+function removeLocalBackup(key) {
+  try {
+    const saved = JSON.parse(localStorage.getItem('hufs_union_fleece') || '{}');
+    delete saved[key];
+    localStorage.setItem('hufs_union_fleece', JSON.stringify(saved));
+  } catch (e) {}
+}
+
+/* ----- 수령함 (이용자) ----- */
+async function handleReceive() {
+  const p = selectedParticipant;
+  if (!p) return;
+  if (isSelectionOpen()) { showToast('선택 기간이 끝난 후에 수령 처리할 수 있습니다.'); return; }
+  if (!(p.color && p.size)) { showToast('선택 내역이 없어 수령 처리할 수 없습니다.'); return; }
+  if (p.received) return;
+  if (!confirm(`${p.name} 님, 후리스를 실제로 수령하셨나요?\n\n수령 처리 후에는 본인이 취소할 수 없습니다.`)) return;
+
+  const receivedAt = new Date().toISOString();
+  const key = p.docId || p.id;
+  try {
+    if (!window.__fb) throw new Error('공유 저장소에 연결되지 않았습니다.');
+    const { doc, setDoc, selectionCollection } = window.__fb;
+    await setDoc(doc(selectionCollection, key), { received: true, receivedAt, receivedBy: 'self' }, { merge: true });
+  } catch (err) {
+    console.error('수령 처리 저장 실패:', err);
+    showToast('수령 처리가 저장되지 않았습니다. 네트워크를 확인하고 다시 시도해 주세요.');
+    return;
+  }
+  p.received = true;
+  p.receivedAt = receivedAt;
+  p.receivedBy = 'self';
+  mergeLocalBackup(key, { received: true, receivedAt, receivedBy: 'self' });
+  updateSelectCardUI(p);
+  showToast('수령 처리되었습니다. 감사합니다!');
+  launchConfetti();
+}
+
+/* ----- 수령 처리/취소 (관리자) ----- */
+async function toggleReceivedAdmin(id) {
+  const p = participants.find(x => x.id === id);
+  if (!p) return;
+  const next = !p.received;
+  if (!confirm(next ? `${p.name} 님을 수령 처리하시겠습니까?` : `${p.name} 님의 수령 처리를 취소하시겠습니까?`)) return;
+  const patch = next
+    ? { received: true, receivedAt: new Date().toISOString(), receivedBy: 'admin' }
+    : { received: false, receivedAt: null, receivedBy: null };
+  const key = p.docId || p.id;
+  try {
+    if (!window.__fb) throw new Error('공유 저장소에 연결되지 않았습니다.');
+    const { doc, setDoc, selectionCollection } = window.__fb;
+    await setDoc(doc(selectionCollection, key), patch, { merge: true });
+  } catch (err) {
+    console.error('수령 상태 변경 실패:', err);
+    showToast('저장 중 오류가 발생했습니다.');
+    return;
+  }
+  Object.assign(p, patch);
+  mergeLocalBackup(key, patch);
+  updateAdminDashboard();
+  refreshSelectCardForPhase();
+  showToast(next ? `${p.name} 님 수령 처리 완료` : `${p.name} 님 수령 처리 취소`);
+}
+
+/* ----- 선택 기간 설정 (관리자) ----- */
+async function persistDeadline(date, okMsg) {
+  const iso = date.toISOString();
+  let cloudOk = false;
+  try {
+    if (window.__fb) {
+      const { doc, setDoc, selectionCollection } = window.__fb;
+      await setDoc(doc(selectionCollection, CONFIG_DOC_ID), { selectionDeadline: iso, updatedAt: new Date().toISOString() });
+      cloudOk = true;
+    }
+  } catch (err) {
+    console.error('선택 기간 저장 실패:', err);
+  }
+  mergeLocalBackup(CONFIG_DOC_ID, { selectionDeadline: iso });
+  selectionDeadline = date;
+  lastSelectionOpen = isSelectionOpen();
+  renderPeriodBanner();
+  updateAdminPeriodUI(true);
+  refreshSelectCardForPhase();
+  showToast(cloudOk ? okMsg : '이 기기에만 적용됨 (공유 저장소 연결 확인 필요)');
+}
+
+async function saveDeadlineFromInput() {
+  const v = document.getElementById('admin-deadline-input').value;
+  if (!v) { showToast('마감 일시를 입력해 주세요.'); return; }
+  const d = new Date((v.length === 16 ? v + ':00' : v) + '+09:00'); // 입력값은 한국 시간
+  if (isNaN(d.getTime())) { showToast('마감 일시 형식이 올바르지 않습니다.'); return; }
+  await persistDeadline(d, `마감 일시가 ${formatKSTShort(d)}로 저장되었습니다.`);
+}
+
+async function extendDeadline(days) {
+  const base = Math.max(selectionDeadline.getTime(), Date.now());
+  const d = new Date(base + days * 86400000);
+  await persistDeadline(d, `마감이 ${formatKSTShort(d)}로 연장되었습니다.`);
+}
+
+async function closeSelectionNow() {
+  if (!confirm('지금 즉시 선택을 마감하시겠습니까?\n마감 후에는 이용자가 색상·사이즈를 선택/변경할 수 없고 수령 버튼이 표시됩니다.')) return;
+  await persistDeadline(new Date(Math.floor(Date.now() / 1000) * 1000 - 1000), '선택이 마감되었습니다.');
+}
+
+async function resetDeadline() {
+  if (!confirm('마감 일시를 기본값(2026-10-30 23:59:59)으로 되돌리시겠습니까?')) return;
+  let cloudOk = false;
+  try {
+    if (window.__fb) {
+      const { doc, deleteDoc, selectionCollection } = window.__fb;
+      await deleteDoc(doc(selectionCollection, CONFIG_DOC_ID));
+      cloudOk = true;
+    }
+  } catch (err) {
+    console.error('기본값 복원 실패:', err);
+  }
+  removeLocalBackup(CONFIG_DOC_ID);
+  selectionDeadline = new Date(DEFAULT_DEADLINE_ISO);
+  lastSelectionOpen = isSelectionOpen();
+  renderPeriodBanner();
+  updateAdminPeriodUI(true);
+  refreshSelectCardForPhase();
+  showToast(cloudOk ? '마감 일시가 기본값으로 복원되었습니다.' : '이 기기에만 적용됨 (공유 저장소 연결 확인 필요)');
+}
+
 function initData() {
   const seoul = rawSeoulData.map((item, idx) => ({
     id: `SEOUL_${idx}_${item.name}`,
@@ -900,6 +1262,12 @@ function updateSizeHint() {
 
 
 window.applyRemoteSelection = function(savedMap) {
+  // 선택 기간 설정(_config 문서) 반영 — 없으면 기본값
+  const prevDeadline = selectionDeadline.getTime();
+  const cfg = savedMap[CONFIG_DOC_ID];
+  const cfgDate = cfg && cfg.selectionDeadline ? new Date(cfg.selectionDeadline) : null;
+  selectionDeadline = (cfgDate && !isNaN(cfgDate.getTime())) ? cfgDate : new Date(DEFAULT_DEADLINE_ISO);
+
   // 문서 ID(SEOUL_번호_이름)에서 이름 → 문서 ID 색인을 만든다.
   // 명단에서 사람을 추가/삭제해 번호가 밀려도 기존 신청 기록을 이름으로 다시 찾기 위함.
   const byName = {};
@@ -922,7 +1290,10 @@ window.applyRemoteSelection = function(savedMap) {
       color: saved ? saved.color : null,
       size: saved ? saved.size : null,
       memo: saved ? (saved.memo || '') : '',
-      updatedAt: saved ? saved.updatedAt : null
+      updatedAt: saved ? saved.updatedAt : null,
+      received: saved ? !!saved.received : false,
+      receivedAt: saved ? (saved.receivedAt || null) : null,
+      receivedBy: saved ? (saved.receivedBy || null) : null
     };
   });
 
@@ -943,6 +1314,10 @@ window.applyRemoteSelection = function(savedMap) {
       }
     }
   }
+
+  lastSelectionOpen = isSelectionOpen();
+  renderPeriodBanner();
+  updateAdminPeriodUI(selectionDeadline.getTime() !== prevDeadline);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -960,6 +1335,12 @@ document.addEventListener('DOMContentLoaded', () => {
   populateAdminFilters();
   updateAdminDashboard();
   updatePopularColorBadge();
+
+  // 선택 기간 표시 + 1초 타이머
+  lastSelectionOpen = isSelectionOpen();
+  renderPeriodBanner();
+  updateAdminPeriodUI(true);
+  setInterval(tickSelectionPeriod, 1000);
 });
 
 function populateAdminFilters() {
@@ -1160,11 +1541,20 @@ function updateSelectCardUI(p) {
   } else {
     currentBox.classList.add('hidden');
   }
+
+  applyPhaseToSelectCard(p);
 }
 
 async function handleSelectSubmit(e) {
   e.preventDefault();
   if (!selectedParticipant) return;
+
+  // 마감 시각이 지났으면 제출 차단 (화면을 열어 둔 채 마감된 경우 대비)
+  if (!isSelectionOpen()) {
+    showToast('선택 기간이 종료되어 제출할 수 없습니다.');
+    refreshSelectCardForPhase();
+    return;
+  }
 
   const color = document.getElementById('selected-color').value;
   const size = document.getElementById('selected-size').value;
@@ -1186,7 +1576,8 @@ async function handleSelectSubmit(e) {
   // 항상 로컬에도 백업 저장
   try {
     const saved = JSON.parse(localStorage.getItem('hufs_union_fleece') || '{}');
-    saved[selectedParticipant.docId || selectedParticipant.id] = payload;
+    const k = selectedParticipant.docId || selectedParticipant.id;
+    saved[k] = { ...(saved[k] || {}), ...payload }; // 수령 기록 등 기존 필드 보존
     localStorage.setItem('hufs_union_fleece', JSON.stringify(saved));
   } catch (e) {
     console.warn('localStorage 저장 실패:', e);
@@ -1197,7 +1588,7 @@ async function handleSelectSubmit(e) {
   try {
     if (window.__fb) {
       const { doc, setDoc, selectionCollection } = window.__fb;
-      await setDoc(doc(selectionCollection, selectedParticipant.docId || selectedParticipant.id), payload);
+      await setDoc(doc(selectionCollection, selectedParticipant.docId || selectedParticipant.id), payload, { merge: true });
       cloudOk = true;
     }
   } catch (err) {
@@ -1313,6 +1704,9 @@ function updateAdminDashboard() {
   document.getElementById('stat-done-pct').innerText = total ? `${Math.round((done / total) * 100)}%` : '0%';
   document.getElementById('stat-pending').innerText = `${pending}명`;
   document.getElementById('stat-pending-pct').innerText = total ? `${Math.round((pending / total) * 100)}%` : '0%';
+  const receivedCnt = filtered.filter(p => p.received).length;
+  document.getElementById('stat-received').innerText = `${receivedCnt}명`;
+  document.getElementById('stat-received-pct').innerText = `선택 완료자 기준 ${done ? Math.round((receivedCnt / done) * 100) : 0}%`;
 
   // Color summary
   const colorCounts = {};
@@ -1369,6 +1763,8 @@ function updateAdminDashboard() {
   let tableData = filtered;
   if (statusFilter === '선택완료') tableData = tableData.filter(p => p.color && p.size);
   else if (statusFilter === '미선택') tableData = tableData.filter(p => !(p.color && p.size));
+  else if (statusFilter === '수령완료') tableData = tableData.filter(p => p.received);
+  else if (statusFilter === '미수령') tableData = tableData.filter(p => p.color && p.size && !p.received);
   if (colorFilter !== 'ALL') tableData = tableData.filter(p => p.color === colorFilter);
   if (sizeFilter !== 'ALL') tableData = tableData.filter(p => p.size === sizeFilter);
   if (searchQuery) {
@@ -1387,7 +1783,7 @@ function renderAdminTable(list) {
   const tbody = document.getElementById('admin-table-body');
 
   if (list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-slate-400">조회된 명단이 없습니다.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="9" class="p-8 text-center text-slate-400">조회된 명단이 없습니다.</td></tr>`;
     return;
   }
 
@@ -1407,19 +1803,27 @@ function renderAdminTable(list) {
   <td class="p-3 whitespace-nowrap">${colorCell}</td>
   <td class="p-3 font-semibold whitespace-nowrap">${sizeCell}</td>
   <td class="p-3 text-slate-500 max-w-[140px] truncate" title="${item.memo || ''}">${item.memo || '-'}</td>
-  <td class="p-3 text-center">
-    ${item.color || item.size || item.memo
+  <td class="p-3 whitespace-nowrap">${item.received
+    ? `<span class="text-emerald-700 font-semibold"><i class="fa-solid fa-check mr-1"></i>수령</span><div class="text-slate-400 text-sm">${formatKSTCompact(item.receivedAt)}${item.receivedBy === 'admin' ? ' (관리자)' : ''}</div>`
+    : '<span class="text-slate-400">-</span>'}</td>
+  <td class="p-3 text-center whitespace-nowrap">
+    ${item.color && item.size
+      ? `<button onclick="toggleReceivedAdmin('${item.id}')" class="px-2.5 py-1 mr-1 rounded-lg ${item.received ? 'bg-slate-100 hover:bg-amber-100 text-slate-600 hover:text-amber-700' : 'bg-indigo-50 hover:bg-indigo-100 text-indigo-700'} text-sm font-semibold transition whitespace-nowrap" title="${item.received ? '수령 취소' : '수령 처리'}">
+           <i class="fa-solid ${item.received ? 'fa-ban' : 'fa-box-open'} mr-1"></i>${item.received ? '수령취소' : '수령처리'}
+         </button>`
+      : ''}
+    ${item.color || item.size || item.memo || item.received
       ? `<button onclick="resetIndividual('${item.id}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-rose-100 text-slate-600 hover:text-rose-700 text-sm font-semibold transition whitespace-nowrap" title="초기화">
            <i class="fa-solid fa-rotate-left mr-1"></i>초기화
          </button>`
-      : '<span class="text-slate-300">-</span>'}
+      : (item.color && item.size ? '' : '<span class="text-slate-300">-</span>')}
   </td>
 </tr>`;
   }).join('');
 }
 
 function exportToCSV() {
-  const headers = ['캠퍼스', '이름', '소속', '근무부서', '휴대폰', '직장메일', '색상코드', '색상', '사이즈', '메모'];
+  const headers = ['캠퍼스', '이름', '소속', '근무부서', '휴대폰', '직장메일', '색상코드', '색상', '사이즈', '메모', '수령여부', '수령일시(KST)'];
   const rows = participants.map(p => {
     const c = COLORS.find(x => x.code === p.color);
     return [
@@ -1432,7 +1836,9 @@ function exportToCSV() {
       p.color || '',
       c ? c.name : '',
       p.size || '',
-      `"${(p.memo || '').replace(/"/g, '""')}"`
+      `"${(p.memo || '').replace(/"/g, '""')}"`,
+      p.received ? 'Y' : '',
+      p.receivedAt ? kstInputValue(new Date(p.receivedAt)).replace('T', ' ') : ''
     ];
   });
   const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
@@ -1451,7 +1857,7 @@ function exportToCSV() {
 async function resetIndividual(id) {
   const target = participants.find(p => p.id === id);
   if (!target) return;
-  if (!confirm(`${target.name} 님의 색상·사이즈 선택을 초기화하시겠습니까?`)) return;
+  if (!confirm(`${target.name} 님의 색상·사이즈 선택을 초기화하시겠습니까?${target.received ? '\n(수령 완료 기록도 함께 삭제됩니다)' : ''}`)) return;
 
   try {
     if (window.__fb) {
@@ -1474,6 +1880,9 @@ async function resetIndividual(id) {
   target.size = null;
   target.memo = '';
   target.updatedAt = null;
+  target.received = false;
+  target.receivedAt = null;
+  target.receivedBy = null;
 
   if (selectedParticipant && selectedParticipant.id === id) {
     selectParticipant(id);
@@ -1483,13 +1892,13 @@ async function resetIndividual(id) {
 }
 
 async function resetDataPrompt() {
-  if (!confirm('전체 조합원의 색상·사이즈 선택 데이터를 모두 초기화하시겠습니까?\n(공유 저장소에서 삭제되며 모든 사용자에게 반영됩니다)')) return;
+  if (!confirm('전체 조합원의 색상·사이즈 선택 및 수령 기록을 모두 초기화하시겠습니까?\n(공유 저장소에서 삭제되며 모든 사용자에게 반영됩니다. 선택 기간 설정은 유지됩니다)')) return;
 
   try {
     if (window.__fb) {
       const { doc, deleteDoc, selectionCollection } = window.__fb;
       const deletions = participants
-        .filter(p => p.color || p.size || p.memo)
+        .filter(p => p.color || p.size || p.memo || p.received)
         .flatMap(p => [...new Set([p.id, p.docId || p.id])])
         .map(k => deleteDoc(doc(selectionCollection, k)));
       await Promise.all(deletions);
@@ -1507,8 +1916,12 @@ async function resetDataPrompt() {
     p.size = null;
     p.memo = '';
     p.updatedAt = null;
+    p.received = false;
+    p.receivedAt = null;
+    p.receivedBy = null;
   });
   updateAdminDashboard();
+  refreshSelectCardForPhase();
   showToast('모든 선택 데이터가 초기화되었습니다.');
 }
 
